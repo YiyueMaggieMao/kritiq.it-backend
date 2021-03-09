@@ -1,14 +1,15 @@
 const express = require('express');
+const cors = require('cors');
 const config = require('./config');
+const router = require('./api');
 
 const server = express();
-const router = express.Router();
-server.use("/api", router); // Registers all routes starting with "/api" to router
+// Allows express to read & parse JSON input
+server.use(cors());
+server.use(express.json());
+server.use(express.urlencoded({extended: true})); 
 
-// The route that returns all the posts
-router.get('/posts', (req, res) => {
-    res.status(200).json([{"author": "Stanley Lee"}, {"author": "Jeffrey Ha"}]);
-});
+server.use("/api", router); // Registers all routes starting with "/api" to router
 
 // Sets the server to start on port 5000
 server.listen(config.PORT, () => {
